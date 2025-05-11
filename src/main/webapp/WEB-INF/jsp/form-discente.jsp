@@ -5,17 +5,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nuovo Alunno</title>
+    <title>Nuovo Discente</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
 </head>
 <body class="container mt-4">
-    <h1>Nuovo Alunno</h1>
+    <h1>Nuovo Discente</h1>
 
-    <a class="btn btn-warning mb-3" href="<c:url value='/alunni/lista'/>">Torna a Lista Alunni</a>
+    <a class="btn btn-warning mb-3" href="<c:url value='/discenti/lista'/>">Torna a Lista discenti</a>
     <div class="row mt-4 justify-content-center">
         <div class="col-6">
-         <form:form class="bg-light p-4 border rounded" method="POST" action="${pageContext.request.contextPath}/alunni/add" modelAttribute="alunno" >
+         <form:form class="bg-light p-4 border rounded" method="POST" action="${pageContext.request.contextPath}/discenti/add" modelAttribute="discente" >
          <form:hidden path="id"/>
 
                 <div class="mb-3">
@@ -40,7 +40,7 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-end">
                   <button type="submit" class="btn btn-success mt-4">
-                     <a>Salva Alunno</a>
+                     <a>Salva Discente</a>
                    </button>
                   </div>
             </form:form>

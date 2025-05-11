@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "docente")
@@ -20,6 +21,9 @@ public class Docente {
 
     @Column(nullable = false, unique = true)
     private Date dataDiNascita;
+
+    @OneToMany(mappedBy = "docente")
+    private List<Corso> corsi;
 
     /* costruttori */
     public Docente() {}

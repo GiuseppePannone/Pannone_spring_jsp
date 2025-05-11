@@ -16,6 +16,7 @@
     <div class="row mt-4 justify-content-center">
         <div class="col-6">
          <form:form class="bg-light p-4 border rounded" method="POST" action="${pageContext.request.contextPath}/docenti/add" modelAttribute="docente" >
+                <form:hidden path="id"/>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">Nome</label>
                   <form:input type="text" cssClass="form-control" path="nome" />

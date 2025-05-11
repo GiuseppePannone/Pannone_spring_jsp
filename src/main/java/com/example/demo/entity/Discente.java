@@ -5,16 +5,16 @@ import jakarta.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "alunno")
-public class Alunno {
+@Table(name = "discente")
+public class Discente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_alunno", nullable = false)
+    @Column(name = "nome_Discente", nullable = false)
     private String nome;
 
-    @Column(name = "cognome_alunno", nullable = false)
+    @Column(name = "cognome_Discente", nullable = false)
     private String cognome;
 
     @Column(nullable = false)
@@ -26,8 +26,8 @@ public class Alunno {
     @Column(nullable = false)
     private int voto;
 
-    public Alunno(){}
-    public Alunno(String nome, String cognome, Date dataDiNascita, String cittaDiResidenza, int voto){
+    public Discente(){}
+    public Discente(String nome, String cognome, Date dataDiNascita, String cittaDiResidenza, int voto){
         this.nome = nome;
         this.cognome = cognome;
         this.dataDiNascita = dataDiNascita;
