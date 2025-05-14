@@ -14,9 +14,10 @@
 <h1>Elenco discenti</h1>
 
 <a class="btn btn-primary mb-3" href="<c:url value='/discenti/nuovo'/>">Nuovo Discente</a>
+<a class="btn btn-warning mb-3" href="<c:url value='/' />">Torna indietro</a>
 <c:choose>
     <c:when test="${filterType == 'promossi'}">
-        <a class="btn btn-warning mb-3" href="<c:url value='/discenti/lista'/>">Torna a lista discenti</a>
+        <a class="btn btn-success mb-3" href="<c:url value='/discenti/lista'/>">Torna a lista discenti</a>
     </c:when>
     <c:otherwise>
         <a class="btn btn-warning mb-3" href="<c:url value='/discenti/promossi'/>">discenti promossi</a>

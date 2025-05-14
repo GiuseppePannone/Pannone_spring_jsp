@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.CorsoDTO;
+import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Corso;
+import com.example.demo.entity.Docente;
 import com.example.demo.service.CorsoService;
+import com.example.demo.service.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,10 +18,12 @@ import java.util.List;
 @RequestMapping("/corsi")
 public class CorsoController {
     private final CorsoService corsoService;
+    private final DocenteService docenteService;
 
     @Autowired
-    public CorsoController(CorsoService corsoService) {
+    public CorsoController(CorsoService corsoService, DocenteService docenteService) {
         this.corsoService = corsoService;
+        this.docenteService = docenteService;
     }
 
     @GetMapping("/lista")
@@ -34,17 +40,22 @@ public class CorsoController {
     public ModelAndView showAdd(){
         ModelAndView modelAndView = new ModelAndView("form-corso");
         Corso corso = new Corso();
+        List<Docente> docenti = docenteService.findAll();
         modelAndView.addObject("corso", corso);
+        modelAndView.addObject("docenti", docenti);
+        modelAndView.addObject("isEdit", false);
         return modelAndView;
     }
 
     @PostMapping("/add")
-    public ModelAndView create(@ModelAttribute("corso") Corso corso, BindingResult br) {
+    public ModelAndView create(@ModelAttribute("corso") CorsoDTO corso, DocenteDTO docenteDTO, BindingResult br) {
         ModelAndView modelAndView = new ModelAndView();
         if(br.hasErrors()){
             modelAndView.setViewName("form-corso");
             return modelAndView;
         }
+        DocenteDTO docente = docenteService.get(corso.getDocente().getId());
+        corso.setDocente(docente);
         corsoService.save(corso);
         modelAndView.setViewName("redirect:/corsi/lista");
         return modelAndView;
@@ -54,11 +65,12 @@ public class CorsoController {
     public ModelAndView showEdit(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("form-corso");
         modelAndView.addObject("corso", corsoService.get(id));
+        modelAndView.addObject("isEdit", true);
         return modelAndView;
     }
 
     @PostMapping("/{id}")
-    public ModelAndView update(@PathVariable Long id, @ModelAttribute("corso") Corso corso, BindingResult br){
+    public ModelAndView update(@PathVariable Long id, @ModelAttribute("corso") CorsoDTO corso, BindingResult br){
         ModelAndView modelAndView = new ModelAndView();
         if(br.hasErrors()){
             modelAndView.setViewName("form-corso");

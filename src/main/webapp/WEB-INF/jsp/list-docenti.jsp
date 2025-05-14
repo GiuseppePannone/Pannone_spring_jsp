@@ -10,11 +10,12 @@
 <h1>Elenco Docenti</h1>
 
 <a class="btn btn-primary mb-3" href="<c:url value='/docenti/nuovo'/>">Nuovo Docente</a>
+<a class="btn btn-warning mb-3" href="<c:url value='/' />">Torna indietro</a>
 
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th>Azioni</th>
+        <th>ID</th><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th>Corso associato</th><th>Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +25,19 @@
             <td>${d.nome}</td>
             <td>${d.cognome}</td>
             <td>${d.dataDiNascita}</td>
+            <td>
+                <c:choose>
+                <c:when test="${!d.corsi.isEmpty()}">
+                <c:forEach var="corso" items="${d.corsi}">
+                                        ${corso.nomeCorso}<br/>
+                                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    Nessun corso associato
+                </c:otherwise>
+
+                </c:choose>
+            </td>
             <td>
                 <a class="btn btn-sm btn-secondary" href="<c:url value='/docenti/${d.id}/edit'/>">Modifica</a>
                 <a class="btn btn-sm btn-danger"

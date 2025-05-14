@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Docente {
     @Column(nullable = false, unique = true)
     private Date dataDiNascita;
 
-    @OneToMany(mappedBy = "docente")
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY)
     private List<Corso> corsi;
 
     /* costruttori */
@@ -31,6 +32,7 @@ public class Docente {
         this.nome = nome;
         this.cognome = cognome;
         this.dataDiNascita = dataDiNascita;
+        this.corsi = new ArrayList<>();
     }
 
     public Long getId() {
@@ -63,5 +65,13 @@ public class Docente {
 
     public void setDataDiNascita(Date dataDiNascita) {
         this.dataDiNascita = dataDiNascita;
+    }
+
+    public List<Corso> getCorsi() {
+        return corsi;
+    }
+
+    public void setCorsi(List<Corso> corsi) {
+        this.corsi = corsi;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.DiscenteDTO;
 import com.example.demo.entity.Discente;
 import com.example.demo.service.DiscenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +54,12 @@ public class DiscenteController {
         ModelAndView modelAndView = new ModelAndView("form-discente");
         Discente discente = new Discente();
         modelAndView.addObject("discente", discente);
+        modelAndView.addObject("isEdit", false);
         return modelAndView;
     }
 
     @PostMapping("/add")
-    public ModelAndView create(@ModelAttribute("discente") Discente discente, BindingResult br) {
+    public ModelAndView create(@ModelAttribute("discente") DiscenteDTO discente, BindingResult br) {
         ModelAndView modelAndView = new ModelAndView();
         if(br.hasErrors()){
             modelAndView.setViewName("form-discente");
@@ -72,11 +74,12 @@ public class DiscenteController {
     public ModelAndView showEdit(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("form-discente");
         modelAndView.addObject("discente", DiscenteService.get(id));
+        modelAndView.addObject("isEdit", true);
         return modelAndView;
     }
 
     @PostMapping("/{id}")
-    public ModelAndView update(@PathVariable Long id, @ModelAttribute("discente") Discente discente, BindingResult br) {
+    public ModelAndView update(@PathVariable Long id, @ModelAttribute("discente") DiscenteDTO discente, BindingResult br) {
         ModelAndView modelAndView = new ModelAndView();
         if(br.hasErrors()){
             modelAndView.setViewName("form-discente");

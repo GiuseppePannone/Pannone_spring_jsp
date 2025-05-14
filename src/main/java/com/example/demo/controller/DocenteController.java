@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Docente;
 import com.example.demo.service.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ public class DocenteController {
     public String list(Model model) {
         List<Docente> docenti = new ArrayList<>();
         docenti = docenteService.findAll();
-        System.out.println(docenti);
         model.addAttribute("docenti", docenti);
         return "list-docenti";
     }
@@ -32,12 +32,13 @@ public class DocenteController {
     @GetMapping("/nuovo")
     public String showAdd(Model model) {
         model.addAttribute("docente", new Docente());
+        model.addAttribute("isEdit", false);
         return "form-docente";
     }
 
     // SALVA NUOVO
     @PostMapping("/add")
-    public String create(@ModelAttribute("docente") Docente docente,
+    public String create(@ModelAttribute("docente") DocenteDTO docente,
                          BindingResult br) {
         if (br.hasErrors()) return "form-docente";
         docenteService.save(docente);
@@ -48,13 +49,14 @@ public class DocenteController {
     @GetMapping("/{id}/edit")
     public String showEdit(@PathVariable Long id, Model model) {
         model.addAttribute("docente", docenteService.get(id));
+        model.addAttribute("isEdit", true);
         return "form-docente";
     }
 
     // AGGIORNA
     @PostMapping("/{id}")
     public String update(@PathVariable Long id,
-                         @ModelAttribute("docente") Docente docente,
+                         @ModelAttribute("docente") DocenteDTO docente,
                          BindingResult br) {
         if (br.hasErrors()) return "form-docente";
         docente.setId(id);

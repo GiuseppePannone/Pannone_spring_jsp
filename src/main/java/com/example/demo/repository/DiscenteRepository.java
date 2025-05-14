@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Discente;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,7 @@ public interface DiscenteRepository extends JpaRepository<Discente, Long> {
     List<Discente> findByGrade(int voto);
 
     @Query("select a from Discente a where a.voto >= 18")
-    List<Discente> findPassedStudent();
+    List<Discente> findPassedStudent(Sort id);
 
     @Query("select a from Discente a where a.nome = ?1")
     List<Discente> findByName(String nome);

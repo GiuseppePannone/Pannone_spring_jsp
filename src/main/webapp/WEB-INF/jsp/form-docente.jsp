@@ -5,12 +5,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nuovo Docente</title>
+    <title>
+    <c:choose>
+        <c:when test="${isEdit}">Modifica Docente</c:when>
+        <c:otherwise>Nuovo Docente</c:otherwise>
+    </c:choose>
+    </title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
 </head>
 <body class="container mt-4">
-    <h1>Nuovo Docente</h1>
+    <h1>
+        <c:choose>
+            <c:when test="${isEdit}">Modifica Docente</c:when>
+            <c:otherwise>Nuovo Docente</c:otherwise>
+        </c:choose>
+    </h1>
 
     <a class="btn btn-warning mb-3" href="<c:url value='/docenti/lista'/>">Torna a Lista Docenti</a>
     <div class="row mt-4 justify-content-center">
@@ -19,15 +29,15 @@
                 <form:hidden path="id"/>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">Nome</label>
-                  <form:input type="text" cssClass="form-control" path="nome" />
+                  <form:input type="text" cssClass="form-control" path="nome" placeholder="Inserisci il nome..."/>
                 </div>
                  <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Cognome</label>
-                    <form:input type="text" cssClass="form-control" path="cognome" />
+                    <form:input type="text" cssClass="form-control" path="cognome" placeholder="Inserisci il cognome..."/>
                  </div>
                   <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">Data di nascita</label>
-                      <form:input type="date" cssClass="form-control" path="dataDiNascita" />
+                      <form:input type="date" cssClass="form-control" path="dataDiNascita"/>
                   </div>
                   <div class="mb-3 d-flex justify-content-end">
                   <button type="submit" class="btn btn-success mt-4">

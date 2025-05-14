@@ -10,11 +10,12 @@
 <h1>Elenco Corsi</h1>
 
 <a class="btn btn-primary mb-3" href="<c:url value='/corsi/nuovo'/>">Nuovo Corso</a>
+<a class="btn btn-warning mb-3" href="<c:url value='/' />">Torna indietro</a>
 
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th><th>Nome del Corso</th><th>Ore</th><th>Anno accademico</th><th>id Docente</th><th>Azioni</th>
+        <th>ID</th><th>Nome del Corso</th><th>Ore</th><th>Anno accademico</th><th>Nome e Cognome Docente</th><th>Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -24,7 +25,7 @@
             <td>${c.nomeCorso}</td>
             <td>${c.oreCorso}</td>
             <td>${c.annoAccademico}</td>
-            <td>${c.docente.id}</td>
+            <td>${c.docente.nome} ${c.docente.cognome}</td>
             <td>
                 <a class="btn btn-sm btn-secondary" href="<c:url value='/corsi/${c.id}/edit'/>">Modifica</a>
                 <a class="btn btn-sm btn-danger"

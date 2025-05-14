@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.CorsoDTO;
 import com.example.demo.entity.Corso;
+import com.example.demo.mapper.CorsoMapper;
 import com.example.demo.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +19,24 @@ public class CorsoService {
         this.corsoRepository = corsoRepository;
     }
 
-    public List<Corso> findAll() {return corsoRepository.findAll();}
+    @Autowired
+    private CorsoMapper corsoMapper;
 
-    public Corso get(Long id) {return corsoRepository.findById(id).orElseThrow();}
+    public List<Corso> findAll() {
+        return corsoRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    }
 
-    public Corso save(Corso c) {return corsoRepository.save(c);}
+    public CorsoDTO get(Long id) {
+        return corsoMapper.convertFromEntitytoDTO(corsoRepository.findById(id).orElseThrow());
+    }
 
-    public void delete(Long id) {corsoRepository.deleteById(id);}
+    public Corso save(CorsoDTO c) {
+        return corsoRepository.save(corsoMapper.convertFromDTOtoEntity(c));
+    }
+
+    public void delete(Long id) {
+        corsoRepository.deleteById(id);
+    }
 
 
 }
