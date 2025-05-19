@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.DiscenteDTO;
 import com.example.demo.entity.Discente;
+import com.example.demo.service.CorsoService;
 import com.example.demo.service.DiscenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +17,16 @@ import java.util.List;
 public class DiscenteController {
 
     @Autowired
-    DiscenteService DiscenteService;
+    DiscenteService discenteService;
 
-    @GetMapping("/lista")
+    @Autowired
+    private CorsoService corsoService;
+
+    /*@GetMapping("/lista")
     public ModelAndView list(@RequestParam(name = "keyword",required = false) String keyword,
                              @RequestParam(name = "citta", required = false) String citta) {
         ModelAndView modelAndView = new ModelAndView();
-        List<Discente> discenti;
+        List<DiscenteDTO> discenti;
         if(keyword != null){
             discenti = DiscenteService.findByNameOrLastname(keyword);
 
@@ -37,12 +41,29 @@ public class DiscenteController {
         modelAndView.addObject("discenti", discenti);
         modelAndView.addObject("filterType", "all");
         return modelAndView;
+    }*/
+    @GetMapping("/lista")
+    public ModelAndView list(@RequestParam(name = "keyword", required = false) String keyword,
+                             @RequestParam(name = "citta", required = false) String citta) {
+
+        ModelAndView modelAndView = new ModelAndView("list-discente");
+
+        List<DiscenteDTO> discenti = discenteService.filterDiscenti(keyword, citta);
+
+        modelAndView.addObject("discenti", discenti);
+        modelAndView.addObject("keyword", keyword);
+        modelAndView.addObject("citta", citta);
+        modelAndView.addObject("filterType", discenteService.getFilterType(keyword, citta));
+
+        return modelAndView;
     }
+
+
 
     @GetMapping("/promossi")
     public ModelAndView listaPromossi(){
         ModelAndView modelAndView = new ModelAndView();
-        List<Discente> discenti = DiscenteService.findPassedStudent();
+        List<DiscenteDTO> discenti = discenteService.findPassedStudent();
         modelAndView.setViewName("list-discente");
         modelAndView.addObject("discenti", discenti);
         modelAndView.addObject("filterType", "promossi");
@@ -65,7 +86,7 @@ public class DiscenteController {
             modelAndView.setViewName("form-discente");
             return modelAndView;
         }
-        DiscenteService.save(discente);
+        discenteService.save(discente);
         modelAndView.setViewName("redirect:/discenti/lista");
         return modelAndView;
     }
@@ -73,7 +94,7 @@ public class DiscenteController {
     @GetMapping("/{id}/edit")
     public ModelAndView showEdit(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("form-discente");
-        modelAndView.addObject("discente", DiscenteService.get(id));
+        modelAndView.addObject("discente", discenteService.get(id));
         modelAndView.addObject("isEdit", true);
         return modelAndView;
     }
@@ -86,7 +107,7 @@ public class DiscenteController {
             return modelAndView;
         }
         discente.setId(id);
-        DiscenteService.save(discente);
+        discenteService.save(discente);
         modelAndView.setViewName("redirect:/discenti");
         return modelAndView;
     }
@@ -94,7 +115,7 @@ public class DiscenteController {
     @GetMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
-        DiscenteService.delete(id);
+        discenteService.delete(id);
         modelAndView.setViewName("redirect:/discenti/lista");
         return modelAndView;
     }

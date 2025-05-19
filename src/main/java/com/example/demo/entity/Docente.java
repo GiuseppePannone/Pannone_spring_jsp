@@ -23,7 +23,7 @@ public class Docente {
     @Column(nullable = false, unique = true)
     private Date dataDiNascita;
 
-    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<Corso> corsi;
 
     /* costruttori */

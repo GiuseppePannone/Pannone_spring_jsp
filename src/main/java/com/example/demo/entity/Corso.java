@@ -2,9 +2,14 @@ package com.example.demo.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "corso")
+@Data
 public class Corso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,19 +24,33 @@ public class Corso {
     @Column(nullable = false)
     private int annoAccademico;
 
-    @ManyToOne
+    @ManyToOne(fetch= FetchType.LAZY,  cascade= CascadeType.DETACH)
     @JoinColumn(name = "id_docente", referencedColumnName = "id")
     private Docente docente;
 
-    public Corso(){}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "corso_alunno",
+            joinColumns = @JoinColumn(name = "id_corso"),
+            inverseJoinColumns = @JoinColumn(name = "id_alunno"))
+    private List<Discente> discenti;
+
+    public String getDiscentiIds() {
+        return discenti == null ? "" : discenti.stream()
+                .map(discente -> discente.getId().toString())
+                .collect(Collectors.joining(","));
+    }
+
+    /*public Corso(){}
     public Corso(String nomeCorso, int oreCorso, int annoAccademico, Docente docente){
         this.nomeCorso = nomeCorso;
         this.oreCorso = oreCorso;
         this.annoAccademico = annoAccademico;
         this.docente = docente;
-    }
+    }*/
 
-    public Long getId() {
+
+
+    /*public Long getId() {
         return id;
     }
 
@@ -69,5 +88,5 @@ public class Corso {
 
     public void setDocente(Docente docente) {
         this.docente = docente;
-    }
+    }*/
 }

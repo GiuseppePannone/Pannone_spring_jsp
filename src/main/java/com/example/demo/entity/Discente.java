@@ -1,9 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
 
 import java.sql.Date;
+import java.util.List;
 
+@Data
 @Entity
 @Table(name = "discente")
 public class Discente {
@@ -26,7 +30,13 @@ public class Discente {
     @Column(nullable = false)
     private int voto;
 
-    public Discente(){}
+    @ManyToMany(targetEntity = Corso.class, cascade = {CascadeType.DETACH})
+    @JoinTable(name = "corso_alunno",
+    joinColumns = {@JoinColumn(name = "id_alunno", referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "id_corso", referencedColumnName = "id")})
+    private List<Corso> corsos;
+
+    /*public Discente(){}
     public Discente(String nome, String cognome, Date dataDiNascita, String cittaDiResidenza, int voto){
         this.nome = nome;
         this.cognome = cognome;
@@ -35,51 +45,31 @@ public class Discente {
         this.voto = voto;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getCognome() {
-        return cognome;
-    }
-
     public void setCognome(String cognome) {
         this.cognome = cognome;
-    }
-
-    public Date getDataDiNascita() {
-        return dataDiNascita;
     }
 
     public void setDataDiNascita(Date dataDiNascita) {
         this.dataDiNascita = dataDiNascita;
     }
 
-    public String getCittaDiResidenza() {
-        return cittaDiResidenza;
-    }
-
     public void setCittaDiResidenza(String cittaDiResidenza) {
         this.cittaDiResidenza = cittaDiResidenza;
-    }
-
-    public int getVoto() {
-        return voto;
     }
 
     public void setVoto(int voto) {
         this.voto = voto;
     }
+
+    public void setCorsos(List<Corso> corsos) {
+        this.corsos = corsos;
+    }*/
 }

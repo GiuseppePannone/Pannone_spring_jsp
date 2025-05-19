@@ -1,14 +1,25 @@
 package com.example.demo.mapper;
 
 import com.example.demo.DTO.CorsoDTO;
+import com.example.demo.DTO.DiscenteDTO;
 import com.example.demo.entity.Corso;
+import com.example.demo.entity.Discente;
+import com.example.demo.entity.Docente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CorsoMapper {
     @Autowired
     private DocenteMapper docenteMapper;
+
+    @Autowired
+    private DiscenteMapper discenteMapper;
+
+
     public CorsoDTO convertFromEntitytoDTO(Corso corso){
         CorsoDTO dto = new CorsoDTO();
         dto.setId(corso.getId());
@@ -20,6 +31,16 @@ public class CorsoMapper {
         }else {
             dto.setDocente(null);
         }
+        if(corso.getDiscenti() != null) {
+            List<DiscenteDTO> discenteDTOList = corso.getDiscenti().stream()
+                    .map(discenteMapper::convertFromEntityToDTO)
+                    .collect(Collectors.toList());
+            dto.setDiscenti(discenteDTOList);
+            List<Long> discentiIds = discenteDTOList.stream()
+                    .map(DiscenteDTO::getId)
+                    .collect(Collectors.toList());
+            dto.setDiscentiIds(discentiIds);
+        }
         return dto;
     }
 
@@ -29,11 +50,20 @@ public class CorsoMapper {
         corso.setNomeCorso(dto.getNomeCorso());
         corso.setOreCorso(dto.getOreCorso());
         corso.setAnnoAccademico(dto.getAnnoAccademico());
-        if(corso.getDocente() != null) {
+        if(dto.getDocente() != null) {
+            Docente docente = docenteMapper.convertFromDTOtoEntity(dto.getDocente());
+            corso.setDocente(docente);  // Set the Docente for the Corso
+        } else {
+            corso.setDocente(null);  // If there's no docente, set it as null
+        }
+
+
+
+        /*if(corso.getDocente() != null) {
             corso.setDocente(docenteMapper.convertFromDTOtoEntity(dto.getDocente()));
         } else {
             corso.setDocente(null);
-        }
+        }*/
 
         return corso;
     }

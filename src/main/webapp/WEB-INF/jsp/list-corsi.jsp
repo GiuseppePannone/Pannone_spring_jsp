@@ -15,7 +15,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th><th>Nome del Corso</th><th>Ore</th><th>Anno accademico</th><th>Nome e Cognome Docente</th><th>Azioni</th>
+        <th>ID</th><th>Nome del Corso</th><th>Ore</th><th>Anno accademico</th><th>Docente</th><th>Discente</th><th>Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +26,11 @@
             <td>${c.oreCorso}</td>
             <td>${c.annoAccademico}</td>
             <td>${c.docente.nome} ${c.docente.cognome}</td>
+            <td>
+                <c:forEach var="d" items="${c.discenti}">
+                    ${d.nome} ${d.cognome}<br/>
+                </c:forEach>
+            </td>
             <td>
                 <a class="btn btn-sm btn-secondary" href="<c:url value='/corsi/${c.id}/edit'/>">Modifica</a>
                 <a class="btn btn-sm btn-danger"

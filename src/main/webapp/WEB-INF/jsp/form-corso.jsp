@@ -44,12 +44,30 @@
                       <label for="docente" class="form-label">Scegli il docente</label>
                       <form:select path="docente.id" class="form-control">
                           <c:forEach var="docente" items="${docenti}">
-                              <option value="${docente.id}">${docente.nome} ${docente.cognome}</option>
+                              <option value="${docente.id}"
+                                      <c:if test="${corso.docente.id != null}">selected="selected"</c:if>>
+                                      ${docente.nome} ${docente.cognome}
+                              </option>
                           </c:forEach>
                       </form:select>
                   </div>
+             <div class="mb-3">
+                 <label for="discente" class="form-label">Scegli gli alunni</label>
+                 <div class="form-check">
+                     <c:forEach var="discente" items="${discenti}">
+                         <div class="form-check">
+                             <form:checkbox path="discentiIds" value="${discente.id}" class="form-check-input" />
+                             <label class="form-check-label">
+                                     ${discente.nome} ${discente.cognome}
+                             </label>
+                         </div>
+                     </c:forEach>
+                 </div>
+             </div>
 
-                  <div class="mb-3 d-flex justify-content-end">
+
+
+             <div class="mb-3 d-flex justify-content-end">
                   <button type="submit" class="btn btn-success mt-4">
                      <a>Salva Corso</a>
                    </button>
