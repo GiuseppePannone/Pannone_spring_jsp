@@ -25,7 +25,8 @@
     <a class="btn btn-warning mb-3" href="<c:url value='/docenti/lista'/>">Torna a Lista Docenti</a>
     <div class="row mt-4 justify-content-center">
         <div class="col-6">
-         <form:form class="bg-light p-4 border rounded" method="POST" action="${pageContext.request.contextPath}/docenti/add" modelAttribute="docente" >
+         <form:form class="bg-light p-4 border rounded" method="POST"  action="${pageContext.request.contextPath}/docenti/add"
+                    modelAttribute="docente" >
                 <form:hidden path="id"/>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">Nome</label>
@@ -39,7 +40,18 @@
                       <label for="exampleFormControlInput1" class="form-label">Data di nascita</label>
                       <form:input type="date" cssClass="form-control" path="dataDiNascita"/>
                   </div>
-                  <div class="mb-3 d-flex justify-content-end">
+             <div class="mb-3">
+                 <label class="form-label">Corsi</label>
+                 <c:forEach var="corso" items="${corsi}">
+                     <div class="form-check">
+                         <form:checkbox path="corsiIds" value="${corso.id}" class="form-check-input"/>
+                         <label class="form-check-label">${corso.nomeCorso}</label>
+                     </div>
+                 </c:forEach>
+
+             </div>
+
+             <div class="mb-3 d-flex justify-content-end">
                   <button type="submit" class="btn btn-success mt-4">
                      <a>Salva Docente</a>
                    </button>
