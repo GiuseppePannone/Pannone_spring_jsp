@@ -1,13 +1,18 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.CorsoDTO;
 import com.example.demo.DTO.DiscenteDTO;
+import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
+import com.example.demo.mapper.CorsoMapper;
 import com.example.demo.mapper.DiscenteMapper;
 import com.example.demo.repository.DiscenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +25,37 @@ public class DiscenteService {
     @Autowired
     private DiscenteMapper discenteMapper;
 
+    @Autowired
+    private CorsoMapper corsoMapper;
+
+    @Autowired
+    @Lazy
+    private CorsoService corsoService;
+
 
     public DiscenteDTO get(Long id) {
-        return discenteMapper.convertFromEntityToDTO(discenteRepository.findById(id).orElseThrow());
+        Discente discente = discenteRepository.findById(id).orElseThrow();
+        DiscenteDTO dto = discenteMapper.convertFromEntityToDTO(discente);
+        if(discente.getCorsos() != null) {
+            List<CorsoDTO> corsiDTO = discente.getCorsos().stream()
+                    .map(corsoMapper::convertFromEntitytoDTO)
+                    .collect(Collectors.toList());
+            dto.setCorsos(corsiDTO);
+        }
+        return dto;
     }
 
     public Discente save(DiscenteDTO dto) {
-        return discenteRepository.save(discenteMapper.convertFromDTOtoEntity(dto));
+        Discente discente = discenteMapper.convertFromDTOtoEntity(dto);
+        if(dto.getCorsiIDs() != null && !dto.getCorsiIDs().isEmpty()) {
+            List<Corso> corsiEntities = dto.getCorsiIDs().stream()
+                    .map(corsoService::getEntityById)
+                    .toList();
+            discente.setCorsos(corsiEntities);
+        } else {
+            discente.setCorsos(Collections.emptyList());
+        }
+        return discenteRepository.save(discente);
     }
 
     public void delete(Long id) {
@@ -59,10 +88,18 @@ public class DiscenteService {
                 .collect(Collectors.toList());
     }
     public List<DiscenteDTO> findAll() {
-        return discenteRepository.findAll(Sort.by(Sort.Order.asc("id")))
-                .stream()
-                .map(discenteMapper::convertFromEntityToDTO)
-                .collect(Collectors.toList());
+        List<Discente> allDiscenti = discenteRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        return allDiscenti.stream()
+                .map(discente -> {
+                    DiscenteDTO dto = discenteMapper.convertFromEntityToDTO(discente);
+                    if(discente.getCorsos() != null) {
+                        List<CorsoDTO> corsiDTO = discente.getCorsos().stream()
+                                .map(corsoMapper::convertFromEntitytoDTO)
+                                .collect(Collectors.toList());
+                        dto.setCorsos(corsiDTO);
+                    }
+                    return dto;
+                }).collect(Collectors.toList());
     }
 
     public List<DiscenteDTO> findByKeyword(String keyword) {
@@ -89,5 +126,11 @@ public class DiscenteService {
     public Discente getEntityById(Long id) {
         return discenteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Discente not found with id " + id));
+    }
+
+    public List<CorsoDTO> findAllCorsi(){
+        return corsoService.findAll().stream()
+                .map(corsoMapper::convertFromEntitytoDTO)
+                .collect(Collectors.toList());
     }
 }

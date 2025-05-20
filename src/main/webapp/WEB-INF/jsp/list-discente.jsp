@@ -54,7 +54,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th>Città di residenza</th><th>Voto</th><th>Azioni</th>
+        <th>ID</th><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th>Città di residenza</th><th>Voto</th><th>Corsi</th><th>Azioni</th>
     </tr>
     </thead>
     <tbody>
@@ -66,6 +66,11 @@
             <td>${a.dataDiNascita}</td>
             <td>${a.cittaDiResidenza}</td>
             <td>${a.voto}</td>
+            <td>
+                <c:forEach var="c" items="${a.corsos}">
+                    ${c.nomeCorso}<br/>
+                </c:forEach>
+            </td>
             <td>
                 <a class="btn btn-sm btn-secondary" href="<c:url value='/discenti/${a.id}/edit'/>">Modifica</a>
                 <a class="btn btn-sm btn-danger"

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.DiscenteDTO;
 import com.example.demo.entity.Discente;
+import com.example.demo.mapper.CorsoMapper;
 import com.example.demo.service.CorsoService;
 import com.example.demo.service.DiscenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/discenti")
@@ -21,6 +23,9 @@ public class DiscenteController {
 
     @Autowired
     private CorsoService corsoService;
+    @Autowired
+    private CorsoMapper corsoMapper;
+
 
     /*@GetMapping("/lista")
     public ModelAndView list(@RequestParam(name = "keyword",required = false) String keyword,
@@ -73,9 +78,11 @@ public class DiscenteController {
     @GetMapping("/nuovo")
     public ModelAndView showAdd(){
         ModelAndView modelAndView = new ModelAndView("form-discente");
-        Discente discente = new Discente();
-        modelAndView.addObject("discente", discente);
+        modelAndView.addObject("discente", new DiscenteDTO());
         modelAndView.addObject("isEdit", false);
+        modelAndView.addObject("corsi", corsoService.findAll().stream()
+                .map(corsoMapper::convertFromEntitytoDTO)
+                .collect(Collectors.toList()));
         return modelAndView;
     }
 
@@ -96,6 +103,8 @@ public class DiscenteController {
         ModelAndView modelAndView = new ModelAndView("form-discente");
         modelAndView.addObject("discente", discenteService.get(id));
         modelAndView.addObject("isEdit", true);
+        modelAndView.addObject("corsi", corsoService.findAll().stream()
+                .map(corsoMapper::convertFromEntitytoDTO).collect(Collectors.toList()));
         return modelAndView;
     }
 

@@ -58,5 +58,11 @@ public class CorsoService {
         corsoRepository.deleteById(id);
     }
 
+    public Corso getEntityById(Long id) {
+        return corsoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Corso not found with id " + id));
+    }
+
+
 
 }

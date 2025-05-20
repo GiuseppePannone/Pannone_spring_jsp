@@ -6,6 +6,7 @@ import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
 import com.example.demo.entity.Docente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,11 +14,21 @@ import java.util.stream.Collectors;
 
 @Component
 public class CorsoMapper {
-    @Autowired
+
     private DocenteMapper docenteMapper;
+    private DiscenteMapper discenteMapper;
 
     @Autowired
-    private DiscenteMapper discenteMapper;
+    public void setDocenteMapper( DocenteMapper docenteMapper) {
+        this.docenteMapper = docenteMapper;
+    }
+
+    @Autowired
+    public void setDiscenteMapper(@Lazy DiscenteMapper discenteMapper) {
+        this.discenteMapper = discenteMapper;
+    }
+
+
 
 
     public CorsoDTO convertFromEntitytoDTO(Corso corso){

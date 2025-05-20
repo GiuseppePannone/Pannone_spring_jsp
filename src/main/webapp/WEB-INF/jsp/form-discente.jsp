@@ -48,7 +48,19 @@
                         <label for="exampleFormControlInput1" class="form-label">Voto</label>
                         <form:input type="number" cssClass="form-control" path="voto"/>
                   </div>
-                  <div class="mb-3 d-flex justify-content-end">
+             <div class="mb-3">
+                 <label class="form-label">Corsi associati</label>
+                 <c:forEach var="corso" items="${corsi}">
+                     <div class="form-check">
+                         <form:checkbox path="corsiIDs" value="${corso.id}" cssClass="form-check-input"/>
+                <c:if test="${discente.corsiIDs != null and discente.corsiIDs.contains(corso.id)}"></c:if>
+                         <label class="form-check-label">${corso.nomeCorso}</label>
+                     </div>
+                 </c:forEach>
+
+             </div>
+
+             <div class="mb-3 d-flex justify-content-end">
                   <button type="submit" class="btn btn-success mt-4">
                      <a>Salva Discente</a>
                    </button>

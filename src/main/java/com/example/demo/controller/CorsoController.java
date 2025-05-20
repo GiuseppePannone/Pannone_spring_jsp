@@ -51,14 +51,14 @@ public class CorsoController {
         ModelAndView modelAndView = new ModelAndView("form-corso");
         Corso corso = new Corso();
 
-        // Set discentiIds as an empty list for the new course
+
         CorsoDTO corsoDTO = new CorsoDTO();
-        corsoDTO.setDiscentiIds(new ArrayList<>());  // Initialize as empty list to ensure no students are selected
+        corsoDTO.setDiscentiIds(new ArrayList<>());
 
         List<Docente> docenti = docenteService.findAll();
         List<DiscenteDTO> discenti = discenteService.findAll();
 
-        modelAndView.addObject("corso", corsoDTO);  // Use the CorsoDTO here
+        modelAndView.addObject("corso", corsoDTO);
         modelAndView.addObject("docenti", docenti);
         modelAndView.addObject("discenti", discenti);
         modelAndView.addObject("isEdit", false);
