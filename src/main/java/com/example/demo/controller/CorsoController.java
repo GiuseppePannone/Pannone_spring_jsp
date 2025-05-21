@@ -2,121 +2,65 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.CorsoDTO;
 import com.example.demo.DTO.DiscenteDTO;
-import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Corso;
-import com.example.demo.entity.Discente;
 import com.example.demo.entity.Docente;
 import com.example.demo.mapper.CorsoMapper;
 import com.example.demo.service.CorsoService;
 import com.example.demo.service.DiscenteService;
 import com.example.demo.service.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("/corsi")
+@RestController
+@RequestMapping("api/corsi")
 public class CorsoController {
-    private final CorsoService corsoService;
-    private final DocenteService docenteService;
-    private final DiscenteService discenteService;
-    private final CorsoMapper corsoMapper;
 
     @Autowired
-    public CorsoController(CorsoService corsoService, DocenteService docenteService, DiscenteService discenteService, CorsoMapper corsoMapper) {
-        this.corsoService = corsoService;
-        this.docenteService = docenteService;
-        this.discenteService = discenteService;
-        this.corsoMapper = corsoMapper;
-    }
+    private CorsoService corsoService;
+
 
     @GetMapping("/lista")
-    public ModelAndView list(){
-        ModelAndView modelAndView = new ModelAndView();
-        List<Corso> corsi = corsoService.findAll();
-        modelAndView.setViewName("list-corsi");
-        modelAndView.addObject("corsi", corsi);
-
-        return modelAndView;
+    public List<CorsoDTO> findCorsi(){
+        return corsoService.findAll();
     }
 
-    @GetMapping("/nuovo")
-    public ModelAndView showAdd(){
-        ModelAndView modelAndView = new ModelAndView("form-corso");
-        Corso corso = new Corso();
 
-
-        CorsoDTO corsoDTO = new CorsoDTO();
-        corsoDTO.setDiscentiIds(new ArrayList<>());
-
-        List<Docente> docenti = docenteService.findAll();
-        List<DiscenteDTO> discenti = discenteService.findAll();
-
-        modelAndView.addObject("corso", corsoDTO);
-        modelAndView.addObject("docenti", docenti);
-        modelAndView.addObject("discenti", discenti);
-        modelAndView.addObject("isEdit", false);
-
-        return modelAndView;
+    @PostMapping
+    public ResponseEntity<CorsoDTO> creaCorso(@RequestBody CorsoDTO corsoDTO){
+        CorsoDTO corsoSalvato = corsoService.creaCorso(corsoDTO);
+        return new ResponseEntity<>(corsoSalvato, HttpStatus.CREATED);
     }
 
-    @PostMapping("/add")
-    public ModelAndView create(@ModelAttribute("corso") CorsoDTO corso, BindingResult br) {
-        ModelAndView modelAndView = new ModelAndView();
-        if (corso.getDiscentiIds() != null && !corso.getDiscentiIds().isEmpty()) {
-            List<Discente> discentiEntities = corso.getDiscentiIds().stream()
-                    .map(discenteService::getEntityById)
-                    .collect(Collectors.toList());
-            Corso corsoEntity = corsoMapper.convertFromDTOtoEntity(corso);
-            corsoEntity.setDiscenti(discentiEntities);
-            corsoService.saveEntity(corsoEntity);
-        } else {
-            Corso corsoEntity = corsoMapper.convertFromDTOtoEntity(corso);
-            corsoService.saveEntity(corsoEntity);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CorsoDTO> getById(@PathVariable Long id){
+        try{
+            CorsoDTO corsoDTO = corsoService.findById(id);
+            return ResponseEntity.ok(corsoDTO);
+        } catch(Exception e){
+            return ResponseEntity.notFound().build();
         }
-        modelAndView.setViewName("redirect:/corsi/lista");
-        return modelAndView;
     }
 
-    @GetMapping("/{id}/edit")
-    public ModelAndView showEdit(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("form-corso");
-        CorsoDTO corsoDTO = corsoService.get(id);
-        List<Docente> docenti = docenteService.findAll();
-        List<DiscenteDTO> discenti = discenteService.findAll();
-
-        modelAndView.addObject("corso", corsoDTO);
-        modelAndView.addObject("docenti", docenti);
-        modelAndView.addObject("discenti", discenti);
-        modelAndView.addObject("isEdit", true);
-        return modelAndView;
+    @PutMapping("/{id}")
+    public ResponseEntity<CorsoDTO> update(@PathVariable Long id, @RequestBody CorsoDTO corsoDTO) {
+        CorsoDTO corsoSalvato = corsoService.update(id, corsoDTO);
+        return ResponseEntity.ok(corsoSalvato);
     }
 
-    @PostMapping("/{id}")
-    public ModelAndView update(@PathVariable Long id, @ModelAttribute("corso") CorsoDTO corso, BindingResult br){
-        ModelAndView modelAndView = new ModelAndView();
-        if(br.hasErrors()){
-            modelAndView.setViewName("form-corso");
-            return modelAndView;
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        try{
+            corsoService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            return ResponseEntity.notFound().build();
         }
-        corso.setId(id);
-        corsoService.save(corso);
-        modelAndView.setViewName("redirect:/corsi");
-        return modelAndView;
-
-    }
-
-    @GetMapping("/{id}/delete")
-    public ModelAndView delete(@PathVariable Long id){
-        ModelAndView modelAndView = new ModelAndView();
-        corsoService.delete(id);
-        modelAndView.setViewName("redirect:/corsi/lista");
-        return modelAndView;
     }
 }

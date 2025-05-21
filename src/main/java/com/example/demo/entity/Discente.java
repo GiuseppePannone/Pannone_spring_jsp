@@ -36,40 +36,5 @@ public class Discente {
     inverseJoinColumns = {@JoinColumn(name = "id_corso", referencedColumnName = "id")})
     private List<Corso> corsos;
 
-    /*public Discente(){}
-    public Discente(String nome, String cognome, Date dataDiNascita, String cittaDiResidenza, int voto){
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataDiNascita = dataDiNascita;
-        this.cittaDiResidenza = cittaDiResidenza;
-        this.voto = voto;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public void setDataDiNascita(Date dataDiNascita) {
-        this.dataDiNascita = dataDiNascita;
-    }
-
-    public void setCittaDiResidenza(String cittaDiResidenza) {
-        this.cittaDiResidenza = cittaDiResidenza;
-    }
-
-    public void setVoto(int voto) {
-        this.voto = voto;
-    }
-
-    public void setCorsos(List<Corso> corsos) {
-        this.corsos = corsos;
-    }*/
 }

@@ -11,8 +11,7 @@ public class CorsoDTO {
     private String nomeCorso;
     private int oreCorso;
     private int annoAccademico;
-    private DocenteDTO docente;
-    private List<Long> discentiIds;
+    private List<DocenteDTO> docente;
     private List<DiscenteDTO> discenti;
 
 }
