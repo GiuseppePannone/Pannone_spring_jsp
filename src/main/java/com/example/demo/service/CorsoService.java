@@ -2,18 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.DTO.CorsoDTO;
 import com.example.demo.entity.Corso;
-import com.example.demo.entity.Discente;
-import com.example.demo.entity.Docente;
 import com.example.demo.mapper.CorsoMapper;
 import com.example.demo.repository.CorsoRepository;
-import com.example.demo.repository.DocenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CorsoService {
@@ -30,29 +25,30 @@ public class CorsoService {
     private CorsoMapper corsoMapper;
 
 
+
     public List<CorsoDTO> findAll() {
-        return corsoMapper.convertFromEntityListToDTOList(corsoRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
+        return corsoMapper.entityListToDTOList(corsoRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
 
     }
 
     public CorsoDTO findById(Long id) {
-        return corsoMapper.convertFromEntitytoDTO(corsoRepository.findById(id).orElseThrow(
+        return corsoMapper.toDTO(corsoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Corso non trovato")
         ));
     }
 
     public CorsoDTO creaCorso(CorsoDTO corsoDTO) {
-       Corso corso = corsoMapper.convertFromDTOtoEntity(corsoDTO);
-       return corsoMapper.convertFromEntitytoDTO(corsoRepository.save(corso));
+       Corso corso = corsoMapper.toEntity(corsoDTO);
+       return corsoMapper.toDTO(corsoRepository.save(corso));
     }
 
     public CorsoDTO update(Long id, CorsoDTO corsoDTO) {
         this.corsoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Corso non trovato")
         );
-        Corso corso;
-       corso = corsoMapper.convertFromDTOtoEntity(corsoDTO);
-       return corsoMapper.convertFromEntitytoDTO(corsoRepository.save(corso));
+        corsoDTO.setId(id);
+       Corso corso = corsoMapper.toEntity(corsoDTO);
+       return corsoMapper.toDTO(corsoRepository.save(corso));
     }
 
 

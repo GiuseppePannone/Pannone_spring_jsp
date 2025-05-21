@@ -34,7 +34,7 @@ public class Discente {
     @JoinTable(name = "corso_alunno",
     joinColumns = {@JoinColumn(name = "id_alunno", referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name = "id_corso", referencedColumnName = "id")})
-    private List<Corso> corsos;
+    private List<Corso> corsi;
 
 
 }

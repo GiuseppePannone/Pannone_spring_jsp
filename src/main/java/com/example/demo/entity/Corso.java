@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class Corso {
     @Column(nullable = false)
     private int annoAccademico;
 
-    @ManyToOne(fetch= FetchType.LAZY,  cascade= CascadeType.DETACH)
+    @ManyToOne(fetch= FetchType.LAZY,  cascade= {CascadeType.DETACH, CascadeType.MERGE})
     @JoinColumn(name = "id_docente", referencedColumnName = "id")
     private Docente docente;
 

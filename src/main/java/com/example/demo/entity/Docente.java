@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class Docente {
     @Column(nullable = false, unique = true)
     private Date dataDiNascita;
 
-    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE})
     private List<Corso> corsi;
 
 

@@ -1,24 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.DTO.CorsoDTO;
 import com.example.demo.DTO.DocenteDTO;
-import com.example.demo.entity.Corso;
-import com.example.demo.entity.Docente;
-import com.example.demo.mapper.CorsoMapper;
-import com.example.demo.service.CorsoService;
-import com.example.demo.service.DiscenteService;
 import com.example.demo.service.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/docenti")
@@ -36,8 +25,7 @@ public class DocenteController {
     // SALVA NUOVO
     @PostMapping
     public ResponseEntity<DocenteDTO> create(@RequestBody DocenteDTO docenteDTO) {
-        DocenteDTO docenteSalvato = docenteService.creaDocente(docenteDTO);
-        return new ResponseEntity<>(docenteSalvato, HttpStatus.CREATED);
+        return new ResponseEntity<>(docenteService.creaDocente(docenteDTO), HttpStatus.CREATED);
     }
 
 

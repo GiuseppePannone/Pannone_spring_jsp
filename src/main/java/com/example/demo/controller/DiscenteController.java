@@ -1,21 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.DiscenteDTO;
-import com.example.demo.entity.Discente;
-import com.example.demo.mapper.CorsoMapper;
-import com.example.demo.service.CorsoService;
 import com.example.demo.service.DiscenteService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/discenti")
@@ -25,15 +17,14 @@ public class DiscenteController {
     DiscenteService discenteService;
 
     @GetMapping("/lista")
-   public List<DiscenteDTO> list(){
+   public List<DiscenteDTO> findDiscenti(){
         return discenteService.findAll();
     }
 
 
     @PostMapping
     public ResponseEntity<DiscenteDTO> create(@RequestBody DiscenteDTO discenteDTO){
-        DiscenteDTO discenteSalvato = discenteService.creaDiscente(discenteDTO);
-        return new ResponseEntity<>(discenteSalvato, HttpStatus.CREATED);
+        return new ResponseEntity<>(discenteService.creaDiscente(discenteDTO), HttpStatus.CREATED);
     }
 
 

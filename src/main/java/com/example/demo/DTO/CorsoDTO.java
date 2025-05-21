@@ -1,6 +1,5 @@
 package com.example.demo.DTO;
 
-import com.example.demo.entity.Docente;
 import lombok.Data;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public class CorsoDTO {
     private String nomeCorso;
     private int oreCorso;
     private int annoAccademico;
-    private List<DocenteDTO> docente;
-    private List<DiscenteDTO> discenti;
+    private DocenteCorsoListDTO docente;
+    private List<DiscenteCorsoListDTO> discenti;
 
 }
