@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.DocenteCorsoListDTO;
 import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Corso;
 import com.example.demo.entity.Docente;
@@ -70,8 +71,8 @@ public class DocenteService {
         }
 
 
-        oldDocente.setCorsi(corsi);
-            return docenteMapper.toDto(docenteRepository.save(oldDocente));
+        docente.setCorsi(corsi);
+            return docenteMapper.toDto(docenteRepository.save(docente));
         }
 
     public void delete(Long id) {
